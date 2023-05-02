@@ -1,6 +1,6 @@
 const messagesDiv = document.getElementById('messages-div')
 const chatInput = document.getElementById('chat-text')
-let xz = localStorage.getItem('name')
+let username = localStorage.getItem('name')
 
 if (username == null) {
     window.location.href = 'index.html'
@@ -49,13 +49,13 @@ websocket.addEventListener('message', (message) => {
         return
     }
 
-    username = obj.name
+    usersname = obj.name
     userMessage = obj.message
 
     let messageElement = document.createElement('p')
     messageElement.classList.add('message')
     messageElement.classList.add('message-got')
-    messageElement.innerHTML = `${username}: ${userMessage}`
+    messageElement.innerHTML = `${usersname}: ${userMessage}`
     messagesDiv.appendChild(messageElement)
     messagesDiv.scrollTop = messagesDiv.scrollHeight
 

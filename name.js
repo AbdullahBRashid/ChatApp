@@ -1,4 +1,7 @@
 let nameInput = document.getElementById('name-text')
+if (localStorage.getItem('name') != null) {
+    window.location.href = 'app.html'
+}
 
 nameInput.addEventListener('keyup', (event) => {
     if (event.keyCode === 13) {
