@@ -1,7 +1,7 @@
 let messagesDiv = document.getElementById('messages-div')
 let chatInput = document.getElementById('chat-text')
 
-let websocket = new WebSocket('ws://localhost:4000')
+let websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
 // var socket=io()
 // // make connection with server from user side
 // socket.on('connect', function(){
