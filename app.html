@@ -20,22 +20,22 @@
     <header id="header">
         <img src="/static/Logo.png" alt="Logo of Panda" id="logo">
         <h1>PandaChat</h1>
-        <div>
+        <div id="account-box">
+            <input type="color" id="color-picker" onchange="changeColor()">
             <p id="name-p"></p>
-            <button onclick="logout()" id="back-button">Logout</button>
+            <button onclick="logout()" id="back-button" class="my-button">Logout</button>
         </div>
     </header>
     <main>
         <div id="chat-div">
-        
+            <button onclick="toBottom()" id="to-bottom" class="my-button">To Bottom</button>
         </div>
 
         <div id="chat-input">
             <button id="emoji-picker">Emoji</button>
             <input type="text" name="chat-text" id="chat-text">
-            <button onclick="sendMessage()" id="send-button">Send</button>
-            <input type="color" id="color-picker" onchange="changeColor()">
-            <button onclick="toBottom()" id="to-bottom">To Bottom</button>
+            <button onclick="sendMessage()" id="send-button" class="my-button">Send</button>
+            
         </div>
     </main>
 </body>

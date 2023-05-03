@@ -6,9 +6,15 @@ const chatText = document.getElementById('chat-text')
 const nameEl = document.getElementById('name-p')
 let username = localStorage.getItem('name')
 
+let password = localStorage.getItem('password')
+
 // Check if user is logged in
 
-if (username == null) {
+if (username == null || password == null) {
+    window.location.href = 'index.html'
+}
+
+if (password != 'ABD1357') {
     window.location.href = 'index.html'
 }
 
@@ -85,7 +91,7 @@ function sendMessage() {
     // Add message
     let messageName = document.createElement('h4')
     messageName.classList.add('message-name')
-    messageName.textContent = `${username}`
+    messageName.textContent = `You`
     
     let messageText = document.createElement('p')
     messageText.classList.add('message-text')

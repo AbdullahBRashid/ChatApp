@@ -1,87 +1,148 @@
-/* html {
-    font-size: larger;
-    height: 100vh;
-    overflow-y: hidden;
+* {
+    box-sizing: border-box;
 }
-
-body {
-    height: 100vh
-}
-
-main {
-    height: 100%;
-}
-
-#chat-div {
-    height: 80%;
-    overflow-y: scroll;
-}
-
-
-.header {
-    display: flex;
-    margin-bottom: 3px;
-    position: fixed;
-    top: 0;
-}
-
-#chat-input {
-    display: flex;
-    position: fixed;
-    bottom: 5px;
-}
-
-
-#logo {
-    width: 6vw;
-} */
 
 html {
     height: 100vh;
     overflow-y: hidden;
 }
 
-/* body {
-    height: 100vh
-} */
+body {
+    height: 100%;
+}
 
-header {
+#header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    border-color: #000;
-    border-style: solid;
-    border-width: 3px;
+    outline: 3px solid #000;
+    margin-bottom: 10px;
+    height: 12%;
+    flex-wrap: wrap;
 }
 
-.message {
-    outline: 1px solid #000;
-    font-size: 1.5em;
-}
-
-.message-sent {
-    /* Align text to right side */
-    text-align: right;
+main {
+    height: 90%
 }
 
 #chat-div {
-    margin-top: 5px;
-    padding: 10px;
-    overflow: scroll;
-    height: 80vh;
-    border: 3px solid #000;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding: 15px;
+    overflow-y: scroll;
+    height: 85%;
+    outline: 3px solid #000;
     bottom: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
 }
+
+#account-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+
+#account-box p {
+    font-size: 1.3em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    
+}
+
+.message-box {
+    outline: 1px solid #000;
+    font-size: 1em;
+
+    margin: 5px;
+    padding: 8px 12px;
+
+    width: max-content;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    border-radius: 15px;
+}
+
+.message-sent {
+    background-color: rgb(61, 145, 72);
+}
+
+.message-got {
+    background-color: rgb(102, 102, 102);
+}
+
+#to-bottom {
+    position: fixed;
+    bottom: 130px;
+    right: 40px;
+
+    height: 65px;
+    width: 65px;
+
+    border-radius: 50%;
+}
+
+.message-name {
+    font-weight: bold;
+    margin: 1px;
+    font-family: sans-serif;
+    font-size: 1.3em;
+}
+
+.message-text {
+    color: #fff;
+    margin: 1px;
+    font-size: 1.6em;
+    font-family: sans-serif;
+}
+
+.message-sent {
+    text-align: right;
+    align-self: flex-end;
+    justify-self: flex-end;
+}
+
 
 #chat-input {
     display: flex;
-    position: absolute;
-    bottom: 5px;
-    border: 1px solid #000;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 8%;
+}
+
+#chat-input .my-button {
+    height: 50% !important;
+    width: 5% !important;
+}
+
+#chat-text {
+    width: 100%;
+    height: 90%;
+    margin: 5px;
+    border-radius: 5px;
+
+    font-size: 1.5em;
 }
 
 #logo {
     width: 100px;
+}
+
+.my-button {
+    border-radius: 10px;
+    margin: 0 3px;
+    font-size: 1em;
 }

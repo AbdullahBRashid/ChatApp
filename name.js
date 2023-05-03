@@ -1,20 +1,19 @@
 let nameInput = document.getElementById('name-text')
-if (localStorage.getItem('name') != null) {
+if (localStorage.getItem('name') != null && localStorage.getItem('password') == 'ABD1357') {
     window.location.href = 'app.html'
 }
 
-nameInput.addEventListener('keyup', (event) => {
-    if (event.keyCode === 13) {
-        event.preventDefault()
-        document.getElementById('name-button').click()
-    }
-})
 
 function saveName() {
     let name = nameInput.value;
+    let password = document.getElementById('password-text').value
 
     if (name == '') {
         name = 'Anonymous'
+    }
+
+    if (password == 'ABD1357') {
+        localStorage.setItem('password', password)
     }
 
     localStorage.setItem('name', name)
