@@ -1,0 +1,25 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdullahBRashid/ChatApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbdullahBRashid/ChatApp/issues"
+  },
+  "homepage": "https://github.com/AbdullahBRashid/ChatApp#readme",
+  "dependencies": {
+    "@joeattardi/emoji-button": "^4.6.4",
+    "@picmo/popup-picker": "^5.8.3",
+    "picmo": "^5.8.3"
+  }
+}

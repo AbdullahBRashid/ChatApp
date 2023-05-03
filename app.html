@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="/css/main.css"/>
     <meta name="description" content="PandaChat! The simple way to chat."/>
 
-    <meta property="og:title" content="PandaChat - Be casual" />
-    <meta property="og:url" content="http://abdullahbrashid.ddns.net/app.html/" />
+    <!-- Open Graph for WebLinks -->
+    <meta property="og:title" content="PandaChat - Be real" />
     <meta property="og:description" content="Have a casual chat! Like Pandas." />
-    <meta property="og:image" content="http://abdullahbrashid.ddns.net/static/Logo.png" />
+    <meta property="og:url" content="http://abdullahbrashid.ddns.net:8080/app.html" />
+    <meta property="og:image" content="http://abdullahbrashid.ddns.net:8080/static/Logo.png" />
 
     <title>PandaChat - Be casual</title>
 </head>
@@ -19,18 +20,26 @@
     <header id="header">
         <img src="/static/Logo.png" alt="Logo of Panda" id="logo">
         <h1>PandaChat</h1>
+        <div>
+            <p id="name-p"></p>
+            <button onclick="logout()" id="back-button">Logout</button>
+        </div>
     </header>
     <main>
         <div id="chat-div">
         
         </div>
+
         <div id="chat-input">
+            <button id="emoji-picker">Emoji</button>
             <input type="text" name="chat-text" id="chat-text">
             <button onclick="sendMessage()" id="send-button">Send</button>
             <input type="color" id="color-picker" onchange="changeColor()">
+            <button onclick="toBottom()" id="to-bottom">To Bottom</button>
         </div>
     </main>
 </body>
 
 <script src="./app.js" defer></script>
+<script type="module" src="./emoji.js" defer></script>
 </html>

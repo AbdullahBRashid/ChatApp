@@ -1,9 +1,85 @@
-header {
+/* html {
+    font-size: larger;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+body {
+    height: 100vh
+}
+
+main {
+    height: 100%;
+}
+
+#chat-div {
+    height: 80%;
+    overflow-y: scroll;
+}
+
+
+.header {
+    display: flex;
     margin-bottom: 3px;
+    position: fixed;
+    top: 0;
 }
 
 #chat-input {
     display: flex;
+    position: fixed;
+    bottom: 5px;
+}
+
+
+#logo {
+    width: 6vw;
+} */
+
+html {
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+/* body {
+    height: 100vh
+} */
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-color: #000;
+    border-style: solid;
+    border-width: 3px;
+}
+
+.message {
+    outline: 1px solid #000;
+    font-size: 1.5em;
+}
+
+.message-sent {
+    /* Align text to right side */
+    text-align: right;
+}
+
+#chat-div {
+    margin-top: 5px;
+    padding: 10px;
+    overflow: scroll;
+    height: 80vh;
+    border: 3px solid #000;
+    bottom: 10px;
+}
+
+#chat-input {
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    border: 1px solid #000;
 }
 
 #logo {

@@ -1,5 +1,9 @@
+// Description: Main javascript file for the chat app
+
+// Get elements
 const chatDiv = document.getElementById('chat-div')
-const chatInput = document.getElementById('chat-text')
+const chatText = document.getElementById('chat-text')
+const nameEl = document.getElementById('name-p')
 let username = localStorage.getItem('name')
 
 // Check if user is logged in
@@ -8,10 +12,14 @@ if (username == null) {
     window.location.href = 'index.html'
 }
 
+// Set username
+nameEl.innerText = username
+
 // Add a color picker
 
 let colorPicker = document.getElementById('color-picker')
 
+// Check if color is in local storage
 
 if (localStorage.getItem('color') == null) {
     localStorage.setItem('color', '#000000')
@@ -19,19 +27,13 @@ if (localStorage.getItem('color') == null) {
     colorPicker.value = localStorage.getItem('color')
 }
 
-// Div overflow scroll
-
-chatDiv.style.overflowY = 'scroll'
-chatDiv.style.scrollBehavior = 'smooth'
-chatDiv.style.height = '75vh'
-
 // Connect to websocket
 
 const websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
 
 // Enter to send function
 
-chatInput.addEventListener('keyup', (event) => {
+chatText.addEventListener('keyup', (event) => {
     if (event.keyCode === 13) {
         event.preventDefault()
         document.getElementById('send-button').click()
@@ -39,53 +41,78 @@ chatInput.addEventListener('keyup', (event) => {
 })
 
 function changeColor() {
-    // change color of mine sent text with color picker
+    // Change color of mine sent text with color picker
     let color = document.getElementById('color-picker').value
     localStorage.setItem('color', color)
-    // change color of previous messages sent by me
+
+    // Change color of previous messages sent by me
     let messageSent = document.getElementsByClassName('message-sent')
     for (let i = 0; i < messageSent.length; i++) {
-        messageSent[i].style.color = color
+        messageSent[i].querySelector('.message-name').style.color = color
     }
+
+    // Send color to server
     let message = `{"type": "color", "name": "${username}", "color": "${color}"}`
     websocket.send(message)
 }
 
 function sendMessage() {
-    let input = chatInput.value
+    // Collect input
+    let input = chatText.value
     let color = localStorage.getItem('color')
 
+    // Empty Verification
     if (input == '') {
         return
     }
 
+    // Make message
     let message = `{"type": "message", "name": "${username}", "message": "${input}"}`
-    let messageElement = document.createElement('p')
-
-
-    websocket.send(message)
-
     let colorMessage = `{"type": "color", "name": "${username}", "color": "${color}"}`
-    websocket.send(colorMessage)
-    messageElement.classList.add('message')
-    messageElement.classList.add('message-sent')
 
+    // Send message
+    websocket.send(message)
+    websocket.send(colorMessage)
+    
+    // Create message element
+    let messageBox = document.createElement('div')
+
+    // Add classes
+    messageBox.classList.add('message-box')
+    messageBox.classList.add('message-sent')
+
+    
+    // Add message
+    let messageName = document.createElement('h4')
+    messageName.classList.add('message-name')
+    messageName.textContent = `${username}`
+    
+    let messageText = document.createElement('p')
+    messageText.classList.add('message-text')
+    messageText.textContent = input
+    
+    // Add color
     if (color == null) {
-        messageElement.style.color = '#000000'
+        messageName.style.color = '#000000'
     } else {
-        messageElement.style.color = color
+        messageName.style.color = color
     }
-    messageElement.innerHTML = `You: ${input}`
-    chatDiv.appendChild(messageElement)
-    chatInput.value = ''
+
+    messageBox.appendChild(messageName)
+    messageBox.appendChild(messageText)
+    chatDiv.appendChild(messageBox)
+
+    // Empty input
+    chatText.value = ''
 
     // Scroll to bottom
     toBottom()
 
     // Focus on input
-    chatInput.focus()
+    chatText.focus()
 }
 
+// On websocket open
 websocket.addEventListener('message', (message) => {
     let obj
     try {
@@ -94,51 +121,74 @@ websocket.addEventListener('message', (message) => {
         return
     }
 
+    // Check if message or color
     if (obj.type == 'color') {
         let color = obj.color
         let name = obj.name
         
         // change color of previous messages sent by name
-        let messageSent = document.getElementsByClassName(name)
-        for (let i = 0; i < messageSent.length; i++) {
-            if (messageSent[i].innerHTML.includes(name)) {
-                messageSent[i].style.color = color
+        let messagesGot = document.getElementsByClassName(name)
+        for (let i = 0; i < messagesGot.length; i++) {
+            if (messagesGot[i].innerHTML.includes(name)) {
+                messagesGot[i].querySelector('.message-name').style.color = color
             }
         }
         return
     }
 
+    // Get message
     usersname = obj.name
     userMessage = obj.message
 
-    let messageElement = document.createElement('p')
-    messageElement.classList.add('message')
-    messageElement.classList.add('message-got')
-    messageElement.classList.add(usersname)
-    messageElement.innerHTML = `${usersname}: ${userMessage}`
-    chatDiv.appendChild(messageElement)
+    // Create message element
+    let messageBox = document.createElement('div')
+    messageBox.classList.add('message-box')
+    messageBox.classList.add('message-got')
+    messageBox.classList.add(usersname)
+
+    messageName = document.createElement('h4')
+    messageName.classList.add('message-name')
+    messageName.textContent = `${usersname}`
+
+    messageText = document.createElement('p')
+    messageText.classList.add('message-text')
+    messageText.textContent = userMessage
+
+
+    messageBox.appendChild(messageName)
+    messageBox.appendChild(messageText)
+    chatDiv.appendChild(messageBox)
+
+    // Send notification
+    if (document.hidden) {
+        let notification = new Notification('New Message', {
+            body: `${usersname}: ${userMessage}`
+        })
+
+        notification.onclick = () => {
+            window.focus()
+        }
+    }
+
+    // Scroll to bottom
+    toBottom()
+
 });
 
-// add button to logout 
 
-let button = document.createElement('button')
-button.setAttribute('id', 'back-button')
-button.setAttribute('onclick', 'goBack()')
-button.innerHTML = 'logout'
-
-document.getElementById('header').appendChild(button)
-
-function goBack() {
+// Logout function
+function logout() {
     localStorage.removeItem('name')
     localStorage.removeItem('color')
     window.location.href = 'index.html'
 }
 
+// To bottom function
 function toBottom() {
-    chatDiv.scrollTo(0, document.body.scrollHeight)
+    chatDiv.scrollTo(0, chatDiv.scrollHeight)
 }
 
-// if user not at bottom of page show to bottom button
+// If user not at bottom of page show to bottom button
 
 chatDiv.addEventListener('scroll', () => {
     if (chatDiv.scrollTop + chatDiv.clientHeight >= chatDiv.scrollHeight) {
@@ -147,12 +197,3 @@ chatDiv.addEventListener('scroll', () => {
         document.getElementById('to-bottom').style.display = 'block'
     }
 })
-
-// to bottom button
-
-let toBottomButton = document.createElement('button')
-toBottomButton.setAttribute('id', 'to-bottom')
-toBottomButton.setAttribute('onclick', 'toBottom()')
-toBottomButton.innerHTML = 'To Bottom'
-
-document.getElementById('chat-input').appendChild(toBottomButton)
