@@ -1,12 +1,34 @@
-const messagesDiv = document.getElementById('messages-div')
+// DOM elements
+
+const chatDiv = document.getElementById('chat-div')
 const chatInput = document.getElementById('chat-text')
 let username = localStorage.getItem('name')
+
+// Add a color picker
+
+let colorPicker = document.createElement('input')
+colorPicker.setAttribute('type', 'color')
+colorPicker.setAttribute('id', 'color-picker')
+colorPicker.setAttribute('onchange', 'changeColor()')
+document.getElementById('chat-div').appendChild(colorPicker)
+
+if (localStorage.getItem('color') == null) {
+    localStorage.setItem('color', '#000000')
+} else {
+    colorPicker.value = localStorage.getItem('color')
+}
+
+// Check if user is logged in
 
 if (username == null) {
     window.location.href = 'index.html'
 }
 
+// Connect to websocket
+
 const websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
+
+// Enter to send function
 
 chatInput.addEventListener('keyup', (event) => {
     if (event.keyCode === 13) {
@@ -15,22 +37,45 @@ chatInput.addEventListener('keyup', (event) => {
     }
 })
 
+function changeColor() {
+    // change color of mine sent text with color picker
+    let color = document.getElementById('color-picker').value
+    localStorage.setItem('color', color)
+    // change color of previous messages sent by me
+    let messageSent = document.getElementsByClassName('message-sent')
+    for (let i = 0; i < messageSent.length; i++) {
+        messageSent[i].style.color = color
+    }
+    let message = `{"type": "color", "name": "${username}", "color": "${color}"}`
+    websocket.send(message)
+}
+
 function sendMessage() {
     let input = chatInput.value
+    let color = localStorage.getItem('color')
 
     if (input == '') {
         return
     }
 
-    let message = `{"name": "${username}", "message": "${input}"}`
+    let message = `{"type": "message", "name": "${username}", "message": "${input}"}`
     let messageElement = document.createElement('p')
 
 
     websocket.send(message)
+
+    let colorMessage = `{"type": "color", "name": "${username}", "color": "${color}"}`
+    websocket.send(colorMessage)
     messageElement.classList.add('message')
     messageElement.classList.add('message-sent')
+
+    if (color == null) {
+        messageElement.style.color = '#000000'
+    } else {
+        messageElement.style.color = color
+    }
     messageElement.innerHTML = `You: ${input}`
-    messagesDiv.appendChild(messageElement)
+    chatDiv.appendChild(messageElement)
     chatInput.value = ''
 
     // Scroll to bottom
@@ -44,8 +89,21 @@ websocket.addEventListener('message', (message) => {
     let obj
     try {
         obj = JSON.parse(message.data)
-        console.log(obj)
     } catch (error) {
+        return
+    }
+
+    if (obj.type == 'color') {
+        let color = obj.color
+        let name = obj.name
+        
+        // change color of previous messages sent by name
+        let messageSent = document.getElementsByClassName(name)
+        for (let i = 0; i < messageSent.length; i++) {
+            if (messageSent[i].innerHTML.includes(name)) {
+                messageSent[i].style.color = color
+            }
+        }
         return
     }
 
@@ -55,10 +113,24 @@ websocket.addEventListener('message', (message) => {
     let messageElement = document.createElement('p')
     messageElement.classList.add('message')
     messageElement.classList.add('message-got')
+    messageElement.classList.add(usersname)
     messageElement.innerHTML = `${usersname}: ${userMessage}`
-    messagesDiv.appendChild(messageElement)
-    messagesDiv.scrollTop = messagesDiv.scrollHeight
+    chatDiv.appendChild(messageElement)
 
     window.scrollTo(0, document.body.scrollHeight)
 });
 
+// add button to logout 
+
+let button = document.createElement('button')
+button.setAttribute('id', 'back-button')
+button.setAttribute('onclick', 'goBack()')
+button.innerHTML = 'logout'
+
+document.getElementById('chat-div').appendChild(button)
+
+function goBack() {
+    localStorage.removeItem('name')
+    localStorage.removeItem('color')
+    window.location.href = 'index.html'
+}
