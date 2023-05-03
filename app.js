@@ -1,16 +1,17 @@
-// DOM elements
-
 const chatDiv = document.getElementById('chat-div')
 const chatInput = document.getElementById('chat-text')
 let username = localStorage.getItem('name')
 
+// Check if user is logged in
+
+if (username == null) {
+    window.location.href = 'index.html'
+}
+
 // Add a color picker
 
-let colorPicker = document.createElement('input')
-colorPicker.setAttribute('type', 'color')
-colorPicker.setAttribute('id', 'color-picker')
-colorPicker.setAttribute('onchange', 'changeColor()')
-document.getElementById('chat-div').appendChild(colorPicker)
+let colorPicker = document.getElementById('color-picker')
+
 
 if (localStorage.getItem('color') == null) {
     localStorage.setItem('color', '#000000')
@@ -18,11 +19,11 @@ if (localStorage.getItem('color') == null) {
     colorPicker.value = localStorage.getItem('color')
 }
 
-// Check if user is logged in
+// Div overflow scroll
 
-if (username == null) {
-    window.location.href = 'index.html'
-}
+chatDiv.style.overflowY = 'scroll'
+chatDiv.style.scrollBehavior = 'smooth'
+chatDiv.style.height = '75vh'
 
 // Connect to websocket
 
@@ -79,7 +80,7 @@ function sendMessage() {
     chatInput.value = ''
 
     // Scroll to bottom
-    window.scrollTo(0, document.body.scrollHeight)
+    toBottom()
 
     // Focus on input
     chatInput.focus()
@@ -116,8 +117,6 @@ websocket.addEventListener('message', (message) => {
     messageElement.classList.add(usersname)
     messageElement.innerHTML = `${usersname}: ${userMessage}`
     chatDiv.appendChild(messageElement)
-
-    window.scrollTo(0, document.body.scrollHeight)
 });
 
 // add button to logout 
@@ -127,10 +126,33 @@ button.setAttribute('id', 'back-button')
 button.setAttribute('onclick', 'goBack()')
 button.innerHTML = 'logout'
 
-document.getElementById('chat-div').appendChild(button)
+document.getElementById('header').appendChild(button)
 
 function goBack() {
     localStorage.removeItem('name')
     localStorage.removeItem('color')
     window.location.href = 'index.html'
 }
+
+function toBottom() {
+    chatDiv.scrollTo(0, document.body.scrollHeight)
+}
+
+// if user not at bottom of page show to bottom button
+
+chatDiv.addEventListener('scroll', () => {
+    if (chatDiv.scrollTop + chatDiv.clientHeight >= chatDiv.scrollHeight) {
+        document.getElementById('to-bottom').style.display = 'none'
+    } else {
+        document.getElementById('to-bottom').style.display = 'block'
+    }
+})
+
+// to bottom button
+
+let toBottomButton = document.createElement('button')
+toBottomButton.setAttribute('id', 'to-bottom')
+toBottomButton.setAttribute('onclick', 'toBottom()')
+toBottomButton.innerHTML = 'To Bottom'
+
+document.getElementById('chat-input').appendChild(toBottomButton)
