@@ -32,7 +32,7 @@
         <h1 id="title">PandaChat</h1>
 
         <div id="account-box">
-            <input type="color" id="color-picker" onchange="changeColor()">
+            <input type="color" id="color-picker">
             <p id="name-p"></p>
             <button onclick="logout()" id="back-button" class="my-button">Logout</button>
         </div>
@@ -41,13 +41,16 @@
     <!-- Main -->
     <main>
         <div id="messages-container">
-            <button onclick="toBottom()" id="to-bottom" class="my-button"><i class="fa fa-angle-double-down"></i></button>
         </div>
 
         <div id="chat-input">
+            <!-- Emoji Picker -->
             <button id="emoji-picker" class="chat-box-button"><i class="fa-regular fa-face-smile-wink"></i></button>
+            <!-- Text Box -->
             <input type="text" name="chat-text-box" id="chat-text-box" placeholder="Type a message">
-            <button onclick="sendMessage()" id="send-button" class="chat-box-button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            <!-- Send Button -->
+            <button id="send-button" class="chat-box-button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            <!-- Voice Button -->
             <button id="voice-button" class="chat-box-button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
 
             <div id="voice-control-container">
@@ -60,8 +63,8 @@
 </body>
 
     <!-- Scripts -->
-    <script src="/js/app.js" defer></script>
-    <!-- <script src="./js/voice-recorder.js" defer></script> -->
+    <script type="module" src="/js/app.js" defer></script>
+    <script type="module" src="/js/voice-recorder.js" defer></script>
     <script type="module" src="/js/emoji.js" defer></script>
     <script src="https://kit.fontawesome.com/362cd26066.js" crossorigin="anonymous" defer></script>
 
