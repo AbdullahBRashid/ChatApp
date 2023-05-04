@@ -15,7 +15,7 @@ const popup = createPopup({
 });
 
 emojiButton.addEventListener('click', () => {
-    popup.toggle()
+    popup.open()
 })
 
 popup.addEventListener('emoji:select', (event) => {

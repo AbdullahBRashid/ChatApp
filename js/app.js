@@ -1,13 +1,12 @@
 // Description: Main javascript file for the chat app
 
 // Get elements
-const chatDiv = document.getElementById('chat-div')
-const chatText = document.getElementById('chat-text')
+const chatDiv = document.getElementById('messages-container')
+const chatText = document.getElementById('chat-text-box')
 const nameEl = document.getElementById('name-p')
-let username = localStorage.getItem('name')
-
 
 // Check if user is logged in
+let username = localStorage.getItem('name')
 
 if (username == null) {
     window.location.href = 'index.html'
@@ -16,11 +15,8 @@ if (username == null) {
 // Set username
 nameEl.innerText = username
 
-// Add a color picker
-
+// Check if color is stored
 let colorPicker = document.getElementById('color-picker')
-
-// Check if color is in local storage
 
 if (localStorage.getItem('color') == null) {
     localStorage.setItem('color', '#000000')
@@ -30,12 +26,14 @@ if (localStorage.getItem('color') == null) {
 
 // Connect to websocket
 
-const websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
+// const websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
+const websocket = new WebSocket('ws://localhost:4000')
+
 
 // Enter to send function
 
 chatText.addEventListener('keyup', (event) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode == '13') {
         event.preventDefault()
         document.getElementById('send-button').click()
     }
@@ -47,9 +45,9 @@ function changeColor() {
     localStorage.setItem('color', color)
 
     // Change color of previous messages sent by me
-    let messageSent = document.getElementsByClassName('message-sent')
-    for (let i = 0; i < messageSent.length; i++) {
-        messageSent[i].querySelector('.message-name').style.color = color
+    let messagesSent = document.getElementsByClassName('message-sent')
+    for (let i = 0; i < messagesSent.length; i++) {
+        messagesSent[i].querySelector('.message-name').style.color = color
     }
 
     // Send color to server
@@ -68,12 +66,10 @@ function sendMessage() {
     }
 
     // Make message
-    let message = `{"type": "message", "name": "${username}", "message": "${input}"}`
-    let colorMessage = `{"type": "color", "name": "${username}", "color": "${color}"}`
+    let message = `{"type": "message", "name": "${username}", "message": "${input}", "color": "${color}"}`
 
     // Send message
     websocket.send(message)
-    websocket.send(colorMessage)
     
     // Create message element
     let messageBox = document.createElement('div')
@@ -81,7 +77,6 @@ function sendMessage() {
     // Add classes
     messageBox.classList.add('message-box')
     messageBox.classList.add('message-sent')
-
     
     // Add message
     let messageName = document.createElement('h4')
@@ -90,7 +85,17 @@ function sendMessage() {
     
     let messageText = document.createElement('p')
     messageText.classList.add('message-text')
-    messageText.textContent = input
+
+    // Verify if link with regex and put in a tag
+    if (input.includes('http' || 'https')) {
+        console.log('link')
+        let link = document.createElement('a')
+        link.setAttribute('href', input)
+        link.textContent = input
+        messageText.append(link)
+    } else {
+        messageText.textContent = input
+    }
     
     // Add color
     if (color == null) {
@@ -141,6 +146,7 @@ websocket.addEventListener('message', (message) => {
     // Get message
     let usersname = obj.name
     let userMessage = obj.message
+    let messageColor = obj.color
 
     // Create message element
     let messageBox = document.createElement('div')
@@ -150,14 +156,17 @@ websocket.addEventListener('message', (message) => {
     let messageName = document.createElement('h4')
     messageName.classList.add('message-name')
     messageName.textContent = `${usersname}`
+    messageName.style.color = messageColor
 
     // if link then make it a link
     
     let messageText = document.createElement('p')
     messageText.classList.add('message-text')
 
-    if (userMessage.includes('http')) {
+    if (userMessage.includes('http' || 'https')) {
+        console.log('link')
         let link = document.createElement('a')
+        link.setAttribute('href', userMessage)
         link.textContent = userMessage
         messageText.append(link)
     } else {
