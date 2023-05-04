@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="html" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/static/Favicon.png">
     <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/chat-area.css">
+
     <meta name="description" content="PandaChat! The simple way to chat."/>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+    <script src="https://kit.fontawesome.com/362cd26066.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 
     <!-- Open Graph for WebLinks -->
     <meta property="og:title" content="PandaChat - Be real" />
@@ -17,7 +23,7 @@
     <title>PandaChat - Be casual</title>
 </head>
 <body>
-    <header id="header">
+    <header id="header" class="navbar">
         <img src="/static/Logo.png" alt="Logo of Panda" id="logo">
         <h1>PandaChat</h1>
         <div id="account-box">
@@ -28,14 +34,13 @@
     </header>
     <main>
         <div id="chat-div">
-            <button onclick="toBottom()" id="to-bottom" class="my-button">To Bottom</button>
+            <button onclick="toBottom()" id="to-bottom" class="my-button"><i class="fa fa-angle-double-down"></i></button>
         </div>
 
         <div id="chat-input">
-            <button id="emoji-picker">Emoji</button>
+            <button id="emoji-picker"><i class="fa-regular fa-face-smile-wink"></i></button>
             <input type="text" name="chat-text" id="chat-text">
-            <button onclick="sendMessage()" id="send-button" class="my-button">Send</button>
-            
+            <button onclick="sendMessage()" id="send-button" class="my-button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
         </div>
     </main>
 </body>

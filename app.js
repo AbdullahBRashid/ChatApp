@@ -6,15 +6,10 @@ const chatText = document.getElementById('chat-text')
 const nameEl = document.getElementById('name-p')
 let username = localStorage.getItem('name')
 
-let password = localStorage.getItem('password')
 
 // Check if user is logged in
 
-if (username == null || password == null) {
-    window.location.href = 'index.html'
-}
-
-if (password != 'ABD1357') {
+if (username == null) {
     window.location.href = 'index.html'
 }
 
@@ -124,6 +119,7 @@ websocket.addEventListener('message', (message) => {
     try {
         obj = JSON.parse(message.data)
     } catch (error) {
+        console.log(error)
         return
     }
 
@@ -133,7 +129,7 @@ websocket.addEventListener('message', (message) => {
         let name = obj.name
         
         // change color of previous messages sent by name
-        let messagesGot = document.getElementsByClassName(name)
+        let messagesGot = document.getElementsByClassName('message-got')
         for (let i = 0; i < messagesGot.length; i++) {
             if (messagesGot[i].innerHTML.includes(name)) {
                 messagesGot[i].querySelector('.message-name').style.color = color
@@ -143,23 +139,30 @@ websocket.addEventListener('message', (message) => {
     }
 
     // Get message
-    usersname = obj.name
-    userMessage = obj.message
+    let usersname = obj.name
+    let userMessage = obj.message
 
     // Create message element
     let messageBox = document.createElement('div')
     messageBox.classList.add('message-box')
     messageBox.classList.add('message-got')
-    messageBox.classList.add(usersname)
 
-    messageName = document.createElement('h4')
+    let messageName = document.createElement('h4')
     messageName.classList.add('message-name')
     messageName.textContent = `${usersname}`
 
-    messageText = document.createElement('p')
+    // if link then make it a link
+    
+    let messageText = document.createElement('p')
     messageText.classList.add('message-text')
-    messageText.textContent = userMessage
 
+    if (userMessage.includes('http')) {
+        let link = document.createElement('a')
+        link.textContent = userMessage
+        messageText.append(link)
+    } else {
+        messageText.textContent = userMessage
+    }
 
     messageBox.appendChild(messageName)
     messageBox.appendChild(messageText)
@@ -167,6 +170,10 @@ websocket.addEventListener('message', (message) => {
 
     // Send notification
     if (document.hidden) {
+        // send a sound
+        console.log('hidden')
+        let audio = new Audio('notification.mp3')
+        audio.play()
         let notification = new Notification('New Message', {
             body: `${usersname}: ${userMessage}`
         })
