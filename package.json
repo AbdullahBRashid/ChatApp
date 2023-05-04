@@ -21,5 +21,8 @@
     "@joeattardi/emoji-button": "^4.6.4",
     "@picmo/popup-picker": "^5.8.3",
     "picmo": "^5.8.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
   }
 }
