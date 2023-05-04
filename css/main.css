@@ -99,8 +99,8 @@ a {
 
 
 #voice-control-container {
-    display: flex;
-    flex-direction: column;
+    display: none;
+    flex-direction: row;
     background: rgb(1, 100, 1);
 
     border-radius: 20px;

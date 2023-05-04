@@ -1,3 +1,5 @@
+import { websocket } from './socket.js'
+
 // Description: Main javascript file for the chat app
 
 // Get elements
@@ -24,12 +26,6 @@ if (localStorage.getItem('color') == null) {
     colorPicker.value = localStorage.getItem('color')
 }
 
-// Connect to websocket
-
-// const websocket = new WebSocket('ws://abdullahbrashid.ddns.net:4000')
-const websocket = new WebSocket('ws://localhost:4000')
-
-
 // Enter to send function
 
 chatText.addEventListener('keyup', (event) => {
@@ -39,8 +35,9 @@ chatText.addEventListener('keyup', (event) => {
     }
 })
 
-function changeColor() {
-    // Change color of mine sent text with color picker
+let colorChangeButton = document.getElementById('color-picker')
+// Change color of mine sent text with color picker
+colorChangeButton.onchange = () => {
     let color = document.getElementById('color-picker').value
     localStorage.setItem('color', color)
 
@@ -55,7 +52,9 @@ function changeColor() {
     websocket.send(message)
 }
 
-function sendMessage() {
+let sendButton = document.getElementById('send-button')
+
+sendButton.onclick =  () => {
     // Collect input
     let input = chatText.value
     let color = localStorage.getItem('color')
@@ -121,10 +120,34 @@ function sendMessage() {
 // On websocket open
 websocket.addEventListener('message', (message) => {
     let obj
+
     try {
         obj = JSON.parse(message.data)
+        
     } catch (error) {
-        console.log(error)
+        let chunks = [];
+
+        chunks.push(message.data)
+
+        let blob = new Blob(chunks, { type: "audio/webm; codecs=opus" })
+
+        let audio = document.createElement('audio')
+        audio.setAttribute("controls", "");
+        audio.src = window.URL.createObjectURL(blob)
+
+        let audioBox = document.createElement('div')
+        audioBox.classList.add('message-box')
+        audioBox.classList.add('message-got')
+
+        let audioName = document.createElement('h4')
+        audioName.classList.add('message-name')
+        audioName.textContent = `${username}`
+
+        audioBox.appendChild(audioName)
+        audioBox.appendChild(audio)
+
+        chatDiv.appendChild(audioBox)
+
         return
     }
 
@@ -140,6 +163,16 @@ websocket.addEventListener('message', (message) => {
                 messagesGot[i].querySelector('.message-name').style.color = color
             }
         }
+        return
+    }
+
+    if (obj.type == 'audio') {
+        let audio = new Audio(obj.audio)
+        audio.play()
+        return
+    }
+
+    if (obj.type != 'message') {
         return
     }
 
@@ -164,7 +197,6 @@ websocket.addEventListener('message', (message) => {
     messageText.classList.add('message-text')
 
     if (userMessage.includes('http' || 'https')) {
-        console.log('link')
         let link = document.createElement('a')
         link.setAttribute('href', userMessage)
         link.textContent = userMessage
@@ -179,9 +211,8 @@ websocket.addEventListener('message', (message) => {
 
     // Send notification
     if (document.hidden) {
-        // send a sound
-        console.log('hidden')
-        let audio = new Audio('notification.mp3')
+        // Send a sound notification
+        let audio = new Audio('/static/notification.mp3')
         audio.play()
         let notification = new Notification('New Message', {
             body: `${usersname}: ${userMessage}`

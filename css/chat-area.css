@@ -15,8 +15,27 @@
     background-image: linear-gradient(to right, rgba(7, 172, 7, 0.664), rgb(5, 160, 134));
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #0000008f;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #000000d0;
+  }
+
 .message-box {
-    /* outline: 1px solid #000; */
     font-size: 1em;
 
     margin: 5px;

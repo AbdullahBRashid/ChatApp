@@ -1,101 +1,107 @@
+import { websocket } from './socket.js'
+
 let recordButton = document.getElementById('voice-button')
 let stopButton = document.getElementById('stop-voice-button')
 let cancelButton = document.getElementById('cancel-voice-button')
+let container = document.getElementById('voice-control-container')
+
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
-    cancelButton.onclick = () => {
-        recordButton.style.display = 'block'
-        stopButton.style.display = 'none'
-        cancelButton.style.display = 'none'
+  recordButton.onclick = () => {      
+    
+    console.log('started')
 
-        mediaRecorder.stop()
-    }
-
-    navigator.mediaDevices
-      .getUserMedia(
-        // constraints - only audio needed for this app
-        {
-          audio: true,
-        }
-      )
-  
-      // Success callback
+    navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
+
         const mediaRecorder = new MediaRecorder(stream);
 
-        recordButton.onclick = () => {
-            // recordButton.style.display = 'none'
-            stopButton.style.display = 'block'
-            // cancelButton.style.display = 'block'
+        mediaRecorder.start();
+        
+        recordButton.style.display = 'none'
+        container.style.display = 'flex'
 
-            mediaRecorder.start();
-            console.log(mediaRecorder.state);
-            console.log("recorder started");
-            recordButton.style.background = "red";
-            recordButton.style.color = "black";
-        };
 
         let chunks = [];
+        let color = localStorage.getItem('color')
+        let username = localStorage.getItem('name')
 
         mediaRecorder.ondataavailable = (e) => {
+            let id = Math.random().toString(36).substring(2, 10)
+            websocket.send(e.data)
             chunks.push(e.data);
         };
 
         stopButton.onclick = () => {
             recordButton.style.display = 'block'
-            stopButton.style.display = 'none'
+            container.style.display = 'none'
             mediaRecorder.stop();
-            console.log(mediaRecorder.state);
-            console.log("recorder stopped");
-            recordButton.style.background = "";
-            recordButton.style.color = "";
+
+            let sendBool = true;
+
+            // stop the stream
+            stream.getTracks().forEach(function(track) {
+              track.stop();
+            });
+
+            mediaRecorder.onstop = (e) => {
+
+              if (sendBool) {
+          
+                const clipContainer = document.createElement("article");
+                const audio = document.createElement("audio");
+              
+                clipContainer.classList.add("clip");
+                audio.setAttribute("controls", "");
+              
+                clipContainer.appendChild(audio);
+
+                let messagesContainer = document.getElementById('messages-container')
+
+                let messageBox = document.createElement('div')
+
+                messageBox.classList.add('message-box')
+                messageBox.classList.add('message-voice')
+                messageBox.classList.add('message-sent')
+
+                // name
+                let nameEl = document.createElement('p')
+                nameEl.classList.add('message-name')
+                nameEl.textContent = 'You'
+
+                messageBox.appendChild(nameEl)
+                messageBox.appendChild(clipContainer)
+
+                messagesContainer.appendChild(messageBox);
+                const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+                chunks = [];
+
+                const audioURL = window.URL.createObjectURL(blob);
+                audio.src = audioURL;
+
+                sendBool = false;
+              }
+            }            
         };
 
-        mediaRecorder.onstop = (e) => {
-            console.log("recorder stopped");
-          
-            const clipName = prompt("Enter a name for your sound clip");
-          
-            const clipContainer = document.createElement("article");
-            const clipLabel = document.createElement("p");
-            const audio = document.createElement("audio");
-            const deleteButton = document.createElement("button");
-          
-            clipContainer.classList.add("clip");
-            audio.setAttribute("controls", "");
-            deleteButton.innerHTML = "Delete";
-            clipLabel.innerHTML = clipName;
-          
-            clipContainer.appendChild(audio);
-            clipContainer.appendChild(clipLabel);
-            clipContainer.appendChild(deleteButton);
+        cancelButton.onclick = () => {
+          recordButton.style.display = 'block'
+          container.style.display = 'none'
 
-            let clipsContainer = document.getElementById('clips-container')
+          stream.getTracks().forEach(function(track) {
+            track.stop();
 
-            clipsContainer.appendChild(clipContainer);
-          
-            const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-            chunks = [];
-            const audioURL = window.URL.createObjectURL(blob);
-            audio.src = audioURL;
-          
-            deleteButton.onclick = (e) => {
-              let evtTgt = e.target;
-              evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-            };
-          };
-          
-          
-
-
+          });
+        }
       })
   
-      // Error callback
       .catch((err) => {
         console.error(`The following getUserMedia error occurred: ${err}`);
+        alert('Please enable your mic!')
       });
-  } else {
+    }
+} else {
     console.log("getUserMedia not supported on your browser!");
-  }
-
+    alert("mic what?")
+} 
