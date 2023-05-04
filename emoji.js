@@ -2,7 +2,7 @@ import { createPopup } from 'https://unpkg.com/@picmo/popup-picker@latest/dist/i
 
 
 let emojiButton = document.getElementById('emoji-picker')
-let textChat = document.getElementById('chat-text')
+let textChat = document.getElementById('chat-text-box')
 
 const popup = createPopup({
     rootElement: emojiButton,
@@ -23,18 +23,14 @@ popup.addEventListener('emoji:select', (event) => {
     textChat.focus()
 })
 
-
-// textChat.addEventListener('keyup', (event) => {
-//     if (event.keyCode === 186) {
-//         popup.toggle()
-//         textChat.value = textChat.value.slice(0, -1)
-//         document.querySelector('.picmo__searchField').focus()
-//     }
-// })
-
 // Ctrl+/ focuses on text box 
 
 document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key === '/') {
         textChat.focus()
-    }})
+}})
+
+document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.shiftKey && event.key === 'E') {
+        popup.toggle()
+}})
