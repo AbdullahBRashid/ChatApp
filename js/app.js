@@ -128,7 +128,7 @@ sendButton.onclick =  () => {
     messageTextEl.classList.add('message-text')
 
     // Verify if link with regex and put in a tag
-    if (input.statsWith('http' || 'https')) {
+    if (input.includes('http' || 'https')) {
         let link = document.createElement('a')
         link.setAttribute('href', input)
         link.textContent = input
