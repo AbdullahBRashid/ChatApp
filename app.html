@@ -32,26 +32,40 @@
         <h1 id="title">PandaChat</h1>
 
         <div id="account-box">
-            <input type="color" id="color-picker">
-            <p id="name-p"></p>
-            <button onclick="logout()" id="back-button" class="my-button">Logout</button>
+            <div id="name-container">
+                <p id="name-p"></p>
+                <button id="logout-button" class="my-button"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
+            </div>
+            <div id="top-buttons-container">
+                <div id="name-color-container" class="color-container">
+                    <p class="top-bar-label">Name:</p>
+                    <input type="color" id="name-color-picker" class="color-picker">
+                </div>
+                <div id="box-color-container" class="color-container">
+                    <p class="top-bar-label">Box:</p>
+                    <input type="color" id="box-color-picker" class="color-picker">
+                </div>
+
+            </div>
         </div>
     </header>
 
     <!-- Main -->
-    <main>
+    <main id="main">
         <div id="messages-container">
+            <!-- To bottom button -->
+            <button id="to-bottom-button" class="my-button"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
         </div>
 
         <div id="chat-input">
             <!-- Emoji Picker -->
             <button id="emoji-picker" class="chat-box-button"><i class="fa-regular fa-face-smile-wink"></i></button>
             <!-- Text Box -->
-            <input type="text" name="chat-text-box" id="chat-text-box" placeholder="Type a message">
+            <input autocomplete="off" type="text" name="chat-text-box" id="chat-text-box" placeholder="Type a message">
             <!-- Send Button -->
             <button id="send-button" class="chat-box-button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             <!-- Voice Button -->
-            <button id="voice-button" class="chat-box-button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
+            <!-- <button id="voice-button" class="chat-box-button"><i class="fa fa-microphone" aria-hidden="true"></i></button> -->
 
             <div id="voice-control-container">
                 <button id="stop-voice-button" class="chat-box-button"><i class="fa fa-stop" aria-hidden="true"></i></button>

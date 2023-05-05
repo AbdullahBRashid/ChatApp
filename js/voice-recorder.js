@@ -8,9 +8,7 @@ let container = document.getElementById('voice-control-container')
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
-  recordButton.onclick = () => {      
-    
-    console.log('started')
+  recordButton.onclick = () => {
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
@@ -65,7 +63,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 messageBox.classList.add('message-voice')
                 messageBox.classList.add('message-sent')
 
-                // name
                 let nameEl = document.createElement('p')
                 nameEl.classList.add('message-name')
                 nameEl.textContent = 'You'
@@ -103,5 +100,4 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     }
 } else {
     console.log("getUserMedia not supported on your browser!");
-    alert("mic what?")
 } 

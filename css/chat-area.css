@@ -3,8 +3,9 @@
     margin-bottom: 5px;
     padding: 15px;
     overflow-y: scroll;
-    height: 85%;
-    outline: 3px solid #00328f;
+    /* max-height: 85%; */
+    height: 100%;
+    /* outline: 3px solid #00328f; */
     bottom: 10px;
 
     display: flex;
@@ -12,7 +13,8 @@
 
     position: relative;
 
-    background-image: linear-gradient(to right, rgba(7, 172, 7, 0.664), rgb(5, 160, 134));
+    /* background-image: linear-gradient(to right, rgba(20, 150, 20, 0.5), rgba(0, 180, 0, 0.5)); */
+    background-color: hsl(206, 12%, 15%);
 }
 
 /* width */
@@ -36,7 +38,7 @@
   }
 
 .message-box {
-    font-size: 1em;
+    font-size: 0.7em;
 
     margin: 5px;
     padding: 8px 12px;
@@ -50,13 +52,17 @@
     align-items: flex-start;
 
     border-radius: 15px;
+
+    overflow-wrap: break-word;
+
+    outline: 1px solid black;
 }
 
 .message-got {
-    background-color: rgb(102, 102, 102);
+    background-color: hsl(222, 42%, 30%);
 }
 
-#to-bottom {
+#to-bottom-button {
     position: fixed;
     bottom: 130px;
     right: 40px;
@@ -67,6 +73,9 @@
     width: 65px;
 
     border-radius: 50%;
+
+    background-color: rgba(0, 0, 0, 0.23);
+    border: 2px solid black;
 }
 
 .message-name {
@@ -79,6 +88,9 @@
     color: #fff;
     margin: 1px;
     font-size: 1.6em;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .message-sent {
@@ -89,9 +101,12 @@
 }
 
 @media screen and (max-width: 587px) {
-    #to-bottom {
-        bottom: 100px;
+    #to-bottom-button {
+        bottom: 120px;
         right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 23px;
     }
 
     #messages-container {

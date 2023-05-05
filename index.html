@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/x-icon" href="/static/Favicon.png">
         <link rel="stylesheet" href="/css/main.css"/>
-
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/header.css">
         
 
         <meta name="description" content="PandaChat! The simple way to chat."/>
@@ -20,12 +21,19 @@
         <title>PandaChat - Be casual</title>
     </head>
 <body>
+    <!-- Header -->
+    <header id="header">
+        <img src="/static/Logo.png" alt="Logo of Panda" id="logo">
+        <h1 id="title">PandaChat</h1>
+    </header>
+    
     
     <main>
-        <div>
-            <h3>Enter your name please!</h3>
-            <input type="text" id="name-text" placeholder="Name">
-            <button onclick="saveName()">Save</button>
+        <div id="main-container">
+            <h2 id="welcome-text">Welcome to PandaChat!</h2>
+            <h3 id="name-label">Enter your name please!</h3>
+            <input type="text" id="name-input">
+            <button onclick="saveName()" id="save-name-button">Save</button>
         </div>
     </main>
 

@@ -3,24 +3,32 @@
 }
 
 html {
+    overflow-y: hidden;
+    
     height: 100vh;
 
-    overflow-y: hidden;
 
     font-family: roboto;
 
-    background-color: rgb(1, 88, 1);
+    background-color: hsl(206, 12%, 27%);
 }
 
 body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    /* justify-content: space-around; */
+    overflow: hidden;
     margin: 0;
 }
 
 main {
-    height: 90%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+
 }
 
 a {
@@ -28,8 +36,12 @@ a {
     text-decoration: none;
 }
 
+button {
+    cursor: pointer;
+}
+
 .chat-box-button {
-    font-size: 20px;;
+    font-size: 25px;;
 
     border-radius: 80%;
     border: 0;
@@ -41,8 +53,7 @@ a {
 }
 
 .chat-box-button:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);    
 }
 
 #emoji-picker {
@@ -50,7 +61,7 @@ a {
 }
 
 #send-button {
-    font-size: 25px;
+    font-size: 28px;
     margin: 0;
 }
 
@@ -65,23 +76,24 @@ a {
     justify-content: space-between;
     align-items: center;
 
-    height: 8%;
+    /* height: 8%; */
     bottom: 0;
 
-    margin: 20px;
-    padding: 4px 10px;
+    margin: 5px;
+    padding: 2px 10px;
 
     border-radius: 20px;
     
-    background-color:rgb(1, 88, 1);
+    /* background-color:rgb(1, 88, 1); */
+    background-color: hsl(206, 12%, 15%);
 }
 
 
 #chat-text-box {
     width: 100%;
-    height: 90%;
+    height: 70%;
 
-    margin: 5px;
+    margin: 0px;
     padding: 20px;
     
     border-radius: 20px;
@@ -90,7 +102,8 @@ a {
     font-size: 1.5em;
     
     color: #fff;
-    background-color:rgb(1, 63, 1);
+    /* background-color:rgb(1, 63, 1); */
+    background-color: hsl(207, 15%, 12%);
 }
 
 #chat-text-box:focus {
@@ -118,4 +131,22 @@ a {
     border-radius: 10px;
     margin: 0 3px;
     font-size: 1em;
+}
+
+@media screen and (max-width: 587px) {
+    #chat-input {
+        height: min-content;
+    }
+
+    #chat-text-box {
+        font-size: 1.2em;
+    }
+
+    #send-button {
+        font-size: 1.4em;
+    }
+
+    #emoji-picker {
+        font-size: 1.7em;
+    }
 }
