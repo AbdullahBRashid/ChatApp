@@ -38,8 +38,6 @@
   }
 
 .message-box {
-    font-size: 0.7em;
-
     margin: 5px;
     padding: 8px 12px;
 
@@ -74,20 +72,20 @@
 
     border-radius: 50%;
 
-    background-color: rgba(0, 0, 0, 0.23);
+    background-color: rgba(255, 255, 255, 0.23);
     border: 2px solid black;
 }
 
 .message-name {
     font-weight: bold;
     margin: 1px;
-    font-size: 1.3em;
+    font-size: 1em;
 }
 
 .message-text {
     color: #fff;
     margin: 1px;
-    font-size: 1.6em;
+    font-size: 1.3em;
     max-width: 100%;
     overflow-wrap: break-word;
     word-wrap: break-word;

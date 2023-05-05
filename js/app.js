@@ -3,15 +3,20 @@ import { websocket } from './socket.js'
 // Description: Main javascript file for the chat app
 
 // Get elements
-const chatDiv = document.getElementById('messages-container')
-const chatText = document.getElementById('chat-text-box')
-const nameEl = document.getElementById('name-p')
-
-let mainEl = document.getElementById('main')
 let headerEl = document.getElementById('header')
 
-let chatInputBox = document.getElementById('chat-input')
+const nameEl = document.getElementById('name-p')
+let logoutButton = document.getElementById('logout-button')
 
+let colorChangeButton = document.getElementById('name-color-picker')
+let boxcolorChangeButton = document.getElementById('box-color-picker')
+
+let mainEl = document.getElementById('main')
+const chatDiv = document.getElementById('messages-container')
+
+let chatInputBox = document.getElementById('chat-input')
+const chatText = document.getElementById('chat-text-box')
+let sendButton = document.getElementById('send-button')
 
 
 // Check if user is logged in
@@ -21,26 +26,28 @@ if (username == null) {
     window.location.href = 'index.html'
 }
 
+
 // Set username
 nameEl.innerText = username
 
+
 // Check if color is stored
-let colorPicker = document.getElementById('name-color-picker')
 
 if (localStorage.getItem('color') == null) {
     localStorage.setItem('color', '#000000')
 } else {
-    colorPicker.value = localStorage.getItem('color')
+    colorChangeButton.value = localStorage.getItem('color')
 }
 
+
 // Check if box color is stored
-let boxColorPickerEl = document.getElementById('box-color-picker')
 
 if (localStorage.getItem('box-color') == null) {
     localStorage.setItem('box-color', '#3d9148')
 } else {
-    boxColorPickerEl.value = localStorage.getItem('box-color')
+    boxcolorChangeButton.value = localStorage.getItem('box-color')
 }
+
 
 // Enter to send function
 
@@ -51,8 +58,9 @@ chatText.addEventListener('keyup', (event) => {
     }
 })
 
-let colorChangeButton = document.getElementById('name-color-picker')
+
 // Change color of mine sent text with color picker
+
 colorChangeButton.onchange = () => {
     let color = document.getElementById('name-color-picker').value
     localStorage.setItem('color', color)
@@ -68,11 +76,11 @@ colorChangeButton.onchange = () => {
     websocket.send(message)
 }
 
-// Box Color change
-let boxColorPicker = document.getElementById('box-color-picker')
 
-boxColorPicker.onchange = () => {
-    let color = document.getElementById('box-color-picker').value
+// Box Color change
+
+boxcolorChangeButton.onchange = () => {
+    let color = boxcolorChangeButton.value
     localStorage.setItem('box-color', color)
 
     let messagesSent = document.getElementsByClassName('message-sent')
@@ -85,7 +93,7 @@ boxColorPicker.onchange = () => {
     websocket.send(message)
 }
 
-let sendButton = document.getElementById('send-button')
+
 
 sendButton.onclick =  () => {
     // Collect input
@@ -94,7 +102,7 @@ sendButton.onclick =  () => {
     let boxColor = localStorage.getItem('box-color')
 
     // Empty Verification
-    if (input == '') {
+    if (input.trim() == '') {
         return
     }
 
@@ -112,29 +120,28 @@ sendButton.onclick =  () => {
     messageBox.classList.add('message-sent')
     
     // Add message
-    let messageName = document.createElement('h4')
-    messageName.classList.add('message-name')
-    messageName.textContent = `You`
+    let messageNameEl = document.createElement('h4')
+    messageNameEl.classList.add('message-name')
+    messageNameEl.textContent = `You`
     
-    let messageText = document.createElement('p')
-    messageText.classList.add('message-text')
+    let messageTextEl = document.createElement('p')
+    messageTextEl.classList.add('message-text')
 
     // Verify if link with regex and put in a tag
-    if (input.includes('http' || 'https')) {
-        console.log('link')
+    if (input.statsWith('http' || 'https')) {
         let link = document.createElement('a')
         link.setAttribute('href', input)
         link.textContent = input
-        messageText.append(link)
+        messageTextEl.append(link)
     } else {
-        messageText.textContent = input
+        messageTextEl.textContent = input
     }
     
     // Add color
     if (color == null) {
-        messageName.style.color = '#000000'
+        messageNameEl.style.color = '#000000'
     } else {
-        messageName.style.color = color
+        messageNameEl.style.color = color
     }
 
     // Add box color
@@ -144,8 +151,8 @@ sendButton.onclick =  () => {
         messageBox.style.backgroundColor = boxColor
     }
 
-    messageBox.appendChild(messageName)
-    messageBox.appendChild(messageText)
+    messageBox.appendChild(messageNameEl)
+    messageBox.appendChild(messageTextEl)
     chatDiv.appendChild(messageBox)
 
     // Empty input
@@ -202,18 +209,10 @@ websocket.addEventListener('message', (message) => {
         for (let i = 0; i < messagesGot.length; i++) {
             if (messagesGot[i].innerHTML.includes(name)) {
                 messagesGot[i].querySelector('.message-name').style.color = color
-            }// Set height of main div
-mainEl.style.height = window.innerHeight - headerEl.offsetHeight + 'px'
-chatDiv.style.height = mainEl.offsetHeight - chatInputBox.offsetHeight - 5 + 'px'
-
-
-// If zoom changes resize main div
-window.onresize = () => {
-    mainEl.style.height = window.innerHeight - headerEl.offsetHeight + 'px'
-    chatDiv.style.height = mainEl.offsetHeight - chatInputBox.offsetHeight - 5 + 'px'
-}
+            }
+            
+            return
         }
-        return
     }
 
     if (obj.type == 'box-color') {
@@ -251,27 +250,27 @@ window.onresize = () => {
     messageBox.style.backgroundColor = messageBoxColor
 
 
-    let messageName = document.createElement('h4')
-    messageName.classList.add('message-name')
-    messageName.textContent = `${usersname}`
-    messageName.style.color = messageColor
+    let messageNameEl = document.createElement('h4')
+    messageNameEl.classList.add('message-name')
+    messageNameEl.textContent = `${usersname}`
+    messageNameEl.style.color = messageColor
 
     // if link then make it a link
     
-    let messageText = document.createElement('p')
-    messageText.classList.add('message-text')
+    let messageTextEl = document.createElement('p')
+    messageTextEl.classList.add('message-text')
 
     if (userMessage.includes('http' || 'https')) {
         let link = document.createElement('a')
         link.setAttribute('href', userMessage)
         link.textContent = userMessage
-        messageText.append(link)
+        messageTextEl.append(link)
     } else {
-        messageText.textContent = userMessage
+        messageTextEl.textContent = userMessage
     }
 
-    messageBox.appendChild(messageName)
-    messageBox.appendChild(messageText)
+    messageBox.appendChild(messageNameEl)
+    messageBox.appendChild(messageTextEl)
     chatDiv.appendChild(messageBox)
 
     // Send notification
@@ -327,7 +326,6 @@ chatDiv.addEventListener('scroll', () => {
 })
 
 // Logout Button
-let logoutButton = document.getElementById('logout-button')
 logoutButton.onclick = () => {
     logout()
 }
