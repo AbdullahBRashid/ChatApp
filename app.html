@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/chat-area.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
 
     <!-- Open Graph for WebLinks -->
     <meta property="og:title" content="PandaChat - Be real" />
@@ -31,6 +30,7 @@
         <img src="/static/Logo.png" alt="Logo of Panda" id="logo">
         <h1 id="title">PandaChat</h1>
 
+        <!-- Account Box -->
         <div id="account-box">
             <div id="name-container">
                 <p id="name-p"></p>
@@ -41,10 +41,7 @@
                     <p class="top-bar-label">Name:</p>
                     <input type="color" id="name-color-picker" class="color-picker">
                 </div>
-                <div id="box-color-container" class="color-container">
-                    <p class="top-bar-label">Box:</p>
-                    <input type="color" id="box-color-picker" class="color-picker">
-                </div>
+            </div>
 
             </div>
         </div>
@@ -64,22 +61,11 @@
             <input autocomplete="off" type="text" name="chat-text-box" id="chat-text-box" placeholder="Type a message">
             <!-- Send Button -->
             <button id="send-button" class="chat-box-button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-            <!-- Voice Button -->
-            <!-- <button id="voice-button" class="chat-box-button"><i class="fa fa-microphone" aria-hidden="true"></i></button> -->
-
-            <div id="voice-control-container">
-                <button id="stop-voice-button" class="chat-box-button"><i class="fa fa-stop" aria-hidden="true"></i></button>
-                <button id="cancel-voice-button" class="chat-box-button"><i class="fa fa-ban" aria-hidden="true"></i></button>
-            </div>
         </div>
     </main>
 
 </body>
-
     <!-- Scripts -->
     <script type="module" src="/js/app.js" defer></script>
-    <script type="module" src="/js/voice-recorder.js" defer></script>
     <script type="module" src="/js/emoji.js" defer></script>
-    <script src="https://kit.fontawesome.com/362cd26066.js" crossorigin="anonymous" defer></script>
-
 </html>

@@ -1,6 +1,10 @@
-import { websocket } from './socket.js'
-
+// Author: AbdullahBRashid
 // Description: Main javascript file for the chat app
+
+// Change the address to your server address
+const address = 'ws://localhost:4000'
+
+const socket = new WebSocket(address)
 
 // Get elements
 let headerEl = document.getElementById('header')
@@ -9,7 +13,6 @@ const nameEl = document.getElementById('name-p')
 let logoutButton = document.getElementById('logout-button')
 
 let colorChangeButton = document.getElementById('name-color-picker')
-let boxcolorChangeButton = document.getElementById('box-color-picker')
 
 let mainEl = document.getElementById('main')
 const chatDiv = document.getElementById('messages-container')
@@ -40,14 +43,6 @@ if (localStorage.getItem('color') == null) {
 }
 
 
-// Check if box color is stored
-
-if (localStorage.getItem('box-color') == null) {
-    localStorage.setItem('box-color', '#3d9148')
-} else {
-    boxcolorChangeButton.value = localStorage.getItem('box-color')
-}
-
 
 // Enter to send function
 
@@ -73,25 +68,10 @@ colorChangeButton.onchange = () => {
 
     // Send color to server
     let message = `{"type": "color", "name": "${username}", "color": "${color}"}`
-    websocket.send(message)
+    socket.send(message)
 }
 
 
-// Box Color change
-
-boxcolorChangeButton.onchange = () => {
-    let color = boxcolorChangeButton.value
-    localStorage.setItem('box-color', color)
-
-    let messagesSent = document.getElementsByClassName('message-sent')
-    for (let i = 0; i < messagesSent.length; i++) {
-        messagesSent[i].style.backgroundColor = color
-    }
-
-    // send color to server
-    let message = `{"type": "box-color", "name": "${username}", "color": "${color}"}`
-    websocket.send(message)
-}
 
 
 
@@ -99,7 +79,7 @@ sendButton.onclick =  () => {
     // Collect input
     let input = chatText.value
     let color = localStorage.getItem('color')
-    let boxColor = localStorage.getItem('box-color')
+
 
     // Empty Verification
     if (input.trim() == '') {
@@ -107,10 +87,10 @@ sendButton.onclick =  () => {
     }
 
     // Make message
-    let message = `{"type": "message", "name": "${username}", "message": "${input}", "color": "${color}", "box-color": "${boxColor}"}`
+    let message = `{"type": "message", "name": "${username}", "message": "${input}", "color": "${color}"}`
 
     // Send message
-    websocket.send(message)
+    socket.send(message)
     
     // Create message element
     let messageBox = document.createElement('div')
@@ -144,13 +124,6 @@ sendButton.onclick =  () => {
         messageNameEl.style.color = color
     }
 
-    // Add box color
-    if (boxColor == null) {
-        messageBox.style.backgroundColor = '#rgb(61, 145, 72)'
-    } else {
-        messageBox.style.backgroundColor = boxColor
-    }
-
     messageBox.appendChild(messageNameEl)
     messageBox.appendChild(messageTextEl)
     chatDiv.appendChild(messageBox)
@@ -166,7 +139,7 @@ sendButton.onclick =  () => {
 }
 
 // On websocket open
-websocket.addEventListener('message', (message) => {
+socket.addEventListener('message', (message) => {
     let obj
 
     try {
@@ -208,30 +181,13 @@ websocket.addEventListener('message', (message) => {
         let messagesGot = document.getElementsByClassName('message-got')
         for (let i = 0; i < messagesGot.length; i++) {
             if (messagesGot[i].innerHTML.includes(name)) {
+                console.log(messagesGot[i].querySelector('.message-name'))
                 messagesGot[i].querySelector('.message-name').style.color = color
             }
-            
-            return
         }
+        return
     }
 
-    if (obj.type == 'box-color') {
-        let boxColor = obj['color']
-        let name = obj.name
-
-        // console.log(obj)
-        // console.log(boxColor)
-
-        // change color of previous messages sent by name
-        let messagesGot = document.getElementsByClassName('message-got')
-        for (let i = 0; i < messagesGot.length; i++) {
-            if (messagesGot[i].innerHTML.includes(name)) {
-                messagesGot[i].style.backgroundColor = boxColor
-                console.log('Here')
-            }
-            return
-        }
-    }
 
     if (obj.type != 'message') {
         return
@@ -241,14 +197,11 @@ websocket.addEventListener('message', (message) => {
     let usersname = obj.name
     let userMessage = obj.message
     let messageColor = obj.color
-    let messageBoxColor = obj['box-color']
 
     // Create message element
     let messageBox = document.createElement('div')
     messageBox.classList.add('message-box')
     messageBox.classList.add('message-got')
-    messageBox.style.backgroundColor = messageBoxColor
-
 
     let messageNameEl = document.createElement('h4')
     messageNameEl.classList.add('message-name')
@@ -289,7 +242,6 @@ websocket.addEventListener('message', (message) => {
 
     // Scroll to bottom
     toBottom()
-
 });
 
 

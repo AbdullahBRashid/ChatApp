@@ -37,13 +37,14 @@ main {
     font-family: LemonMilk, sans-serif;
 }
 
-#name-input {
+.index-input {
     min-width: 40%;
     max-width: 60%;
     height: 50px;
     font-size: 1.5em;
     text-align: center;
     border: 0;
+    margin: 5px;
     border-radius: 70px;
     outline: 0;
     border-bottom: 1px solid black;
