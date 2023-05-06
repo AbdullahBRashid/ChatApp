@@ -2,7 +2,7 @@
 // Description: Main javascript file for the chat app
 
 // Change the address to your server address
-const address = 'ws://localhost:4000'
+const address = 'ws://localhost'
 
 const socket = new WebSocket(address)
 
