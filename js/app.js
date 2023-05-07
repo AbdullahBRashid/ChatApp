@@ -283,6 +283,14 @@ logoutButton.onclick = () => {
 }
 
 
+
+
+let logoEl = document.getElementById('logo')
+let titleEl = document.getElementById('title')
+
+
+
+
 // Set height of main div
 mainEl.style.height = window.innerHeight - headerEl.offsetHeight + 'px'
 chatDiv.style.height = mainEl.offsetHeight - chatInputBox.offsetHeight - 5 + 'px'
@@ -292,4 +300,13 @@ chatDiv.style.height = mainEl.offsetHeight - chatInputBox.offsetHeight - 5 + 'px
 window.onresize = () => {
     mainEl.style.height = window.innerHeight - headerEl.offsetHeight + 'px'
     chatDiv.style.height = mainEl.offsetHeight - chatInputBox.offsetHeight - 5 + 'px'
+
+    // If mobile hide logo and title
+    if (window.innerHeight < 500) {
+        logoEl.style.display = 'none'
+        titleEl.style.display = 'none'
+    } else {
+        logoEl.style.display = 'block'
+        titleEl.style.display = 'block'
+    }
 }
