@@ -1,8 +1,10 @@
 // Author: AbdullahBRashid
 // Description: Main javascript file for the chat app
 
+import { URL } from "./config.js";
+
 // Change the address to your server address
-const address = 'ws://localhost'
+const address = URL;
 
 const socket = new WebSocket(address)
 
