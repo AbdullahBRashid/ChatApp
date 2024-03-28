@@ -69,8 +69,12 @@ colorChangeButton.onchange = () => {
     }
 
     // Send color to server
-    let message = `{"type": "color", "name": "${username}", "color": "${color}"}`
-    socket.send(message)
+    let message = JSON.stringify({
+        type: "color",
+        name: username,
+        color: color
+    });
+    socket.send(message);
 }
 
 
@@ -89,8 +93,12 @@ sendButton.onclick =  () => {
     }
 
     // Make message
-    let message = `{"type": "message", "name": "${username}", "message": "${input}", "color": "${color}"}`
-
+    let message = JSON.stringify({
+        type: "message",
+        name: username,
+        message: input,
+        color: color
+    });
     // Send message
     socket.send(message)
     
@@ -142,48 +150,17 @@ sendButton.onclick =  () => {
 
 // On websocket open
 socket.addEventListener('message', (message) => {
-    let obj
-
-    try {
-        obj = JSON.parse(message.data)
-        
-    } catch (error) {
-        let chunks = [];
-
-        chunks.push(message.data)
-
-        let blob = new Blob(chunks, { type: "audio/webm; codecs=opus" })
-
-        let audio = document.createElement('audio')
-        audio.setAttribute("controls", "");
-        audio.src = window.URL.createObjectURL(blob)
-
-        let audioBox = document.createElement('div')
-        audioBox.classList.add('message-box')
-        audioBox.classList.add('message-got')
-
-        let audioName = document.createElement('h4')
-        audioName.classList.add('message-name')
-        audioName.textContent = `${username}`
-
-        audioBox.appendChild(audioName)
-        audioBox.appendChild(audio)
-
-        chatDiv.appendChild(audioBox)
-
-        return
-    }
+    let obj = JSON.parse(message.data);
 
     // Check if message or color
-    if (obj.type == 'color') {
+    if (obj.type === 'color') {
         let color = obj.color
         let name = obj.name
         
         // change color of previous messages sent by name
-        let messagesGot = document.getElementsByClassName('message-got')
+        let messagesGot = document.getElementsByClassName('message-got');
         for (let i = 0; i < messagesGot.length; i++) {
             if (messagesGot[i].innerHTML.includes(name)) {
-                console.log(messagesGot[i].querySelector('.message-name'))
                 messagesGot[i].querySelector('.message-name').style.color = color
             }
         }
