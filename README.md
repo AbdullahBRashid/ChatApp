@@ -1,12 +1,10 @@
-# <h2 style="text-align:center;">PandaChat - The Old Version (Deprecated)</h2>
+# <h2 style="text-align:center;">PandaChat - The Old Version</h2>
 ![image](./images/Home-Page.png)
 ![image](./images/Empty-Chat.png)
 ![image](./images/Message-Display.png)
 
 
-#### This version was made purely for fun with basic Javascript and WebSockets. Nothing else.
-
-I am planning to make a professional chat app, hence leaving this repo as is.
+#### This version was made purely for fun with vanilla Javascript and WebSockets.
 
 To run the website, clone this repo and [ChatApp-Backend-Old](https://github.com/AbdullahBRashid/ChatApp-Backend-Old).
 
