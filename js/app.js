@@ -6,7 +6,7 @@ import { URL } from "./config.js";
 // Change the address to your server address
 const address = URL;
 
-const socket = new WebSocket(address)
+let socket = new WebSocket(address)
 
 // Get elements
 let headerEl = document.getElementById('header')
