@@ -261,7 +261,10 @@ logoutButton.onclick = () => {
     logout()
 }
 
-
+socket.onclose = () => {
+    console.log("Reconnected");
+    socket = new WebSocket(address);
+}
 
 
 let logoEl = document.getElementById('logo')
